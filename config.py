@@ -1,10 +1,11 @@
-# 設定
+import os
+
 class Config(object):
-    # デバックモード
-    DEBUG=True
-    # CSRFやセッションっで使用（イテレーション02で追加）
-    SECRET_KEY = "secret-key"
-    # 警告対策
+    DEBUG = False
+    SECRET_KEY = os.environ.get("SECRET_KEY", "secret-key")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # DB設定
-    SQLALCHEMY_DATABASE_URI = "sqlite:///memodb.sqlite"
+    # RenderのPostgres URLは "postgres://" で始まるがSQLAlchemyは "postgresql://" が必要
+    _db_url = os.environ.get("DATABASE_URL", "sqlite:///memodb.sqlite")
+    if _db_url.startswith("postgres://"):
+        _db_url = _db_url.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URI = _db_url
