@@ -8,3 +8,5 @@ Wikipedia-API==0.5.8
 SQLAlchemy==2.0.25
 alembic==1.18.4
 gunicorn
+psycopg2-binary
+Werkzeug==2.3.7
